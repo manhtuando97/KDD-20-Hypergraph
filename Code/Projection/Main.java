@@ -1,5 +1,3 @@
-package com.company;
-
 import java.io.*;
 
 import java.util.*;
@@ -113,16 +111,11 @@ public class Main {
     }
 
     public static void main(String[] args) throws IOException {
-	// write your code here
-        // read the Generated datasets and project them onto edge-level projected and triangle-level projected graphs
-        //String[] names = {"coauth-DBLP", "coauth-MAG-Geology", "coauth-MAG-History", "congress-bills", "contact-high-school", "contact-primary-school", "DAWN", "email-Enron", "email-Eu", "NDC-classes", "NDC-substances", "tags-ask-ubuntu", "tags-math", "tags-stack-overflow", "threads-math", "threads-stack-overflow"};
-
-        //String[] names = {"hyper_PA 0 DAWN 55", "hyper_PA 0 NDC-classes 1", "hyper_PA 0 NDC-substances 2", "hyper_PA 0 tags-ask-ubuntu 50","hyper_PA 0 tags-math 105", "hyper_PA 0 threads-math 4", "hyper_PA 0 tags-stack-overflow 111"};
-        //String[] names = {"DAWN", "email-Eu", "NDC-classes", "NDC-substances", "tags-ask-ubuntu", "tags-math", "threads-ask-ubuntu", "threads-math"};
+	
 
         String[] names = {"DAWN", "email-Eu", "tags-ask-ubuntu", "tags-math"};
 
-        String directory = "hyper PA non-deterministic/Iteration 2/";
+        String directory = "";
 
         String[] probability = new String[3];
         probability[0] = "0.1";
@@ -130,61 +123,29 @@ public class Main {
         probability[2] = "0.9";
 
 
-        String[] types = new String[3];
-        types[0] = "0.1";
-        types[1] = "0.5";
-        types[2] = "0.9";
         // Edge-level and Triangle-level projections
         for (int i = 1; i <= 1; i ++) {
-            for (int j = 0; j <= 0; j++) {
-                for (int k = 0; k <= 0; k++){
+            
                     String file_name = names[i];
-                    //String prob = probability[j];
-                    //String type = types[k];
+                    
 
                     Hashtable<String, Integer> edgeLevelLabel = new Hashtable();
                     Hashtable<String, Integer> triangleLevelLabel = new Hashtable();
                     Hashtable<String, Integer> tetragonLevelLabel = new Hashtable();
 
                     // Open the files
-                    //File file_simplex = new File("Generated data/seq of sets/CRU " + file_name + " 3 " + prob + " " + type +   " .txt");
-                    //File file_simplex = new File("CRU " + file_name + " 3 " + prob + " " + type +   ".txt");
-                    //File file_simplex = new File("hyper_PA " + probability[j] + " " +  file_name + " 3.txt");
-                    //File file_simplex = new File(  "hyper PA non-deterministic/" + file_name + ".txt");
+                    
                     File file_simplex = new File(  directory + file_name + ".txt");
-
-
-                    //File edge_level_simplices = new File( "Generated data/seq of sets/edge/CRU " + file_name + " " + prob + " " + type +" -edge_level-dictated-simplices (2-7).txt");
-                    //File edge_level_labels = new File (  "Generated data/seq of sets/edge/CRU " + file_name + " " + prob + " " + type +" -edge_level-node-labels (2-7).txt");
-
-                    //File edge_level_simplices = new File( "CRU " + file_name + " 3 " + prob + " " + type +" -edge_level-dictated-simplices (2-7).txt");
-                    //File edge_level_labels = new File (  "hyper PA non-deterministic/" + file_name + "-edge_level-node-labels (2-7).txt");
-                    //File edge_level_simplices = new File(  "hyper PA non-deterministic/" + file_name + "-edge_level-dictated-simplices (2-7).txt");
+                    
                     File edge_level_labels = new File (  directory + file_name + "-edge_level-node-labels (2-7).txt");
                     File edge_level_simplices = new File(  directory + file_name + "-edge_level-dictated-simplices (2-7).txt");
-
-                    //File edge_level_simplices = new File("hyper_PA " + probability[j] + " " +  file_name + " -edge_level-dictated-simplices (2-7).txt");
-                    //File edge_level_labels = new File ("hyper_PA " + probability[j] + " " + file_name + " -edge_level-node-labels (2-7).txt" );
-                    //File triangle_level_simplices = new File(  "Generated data/seq of sets/triangle/CRU " + file_name + " " + prob + " " + type +" -triangle_level-dictated-simplices (3-7).txt");
-                    //File triangle_level_labels = new File(  "hyper PA non-deterministic/" + file_name + "-triangle_level-node-labels (3-7).txt");
-                    //File triangle_level_simplices = new File(   "hyper PA non-deterministic/" + file_name +  "-triangle_level-dictated-simplices (3-7).txt" );
+                    
                     File triangle_level_labels = new File(  directory + file_name + "-triangle_level-node-labels (3-7).txt");
                     File triangle_level_simplices = new File(   directory + file_name +  "-triangle_level-dictated-simplices (3-7).txt" );
-
-                    //File tetragon_level_labels = new File(  "hyper PA non-deterministic/" + file_name + "-tetragon_level-node-labels (4-7).txt");
-                    //File tetragon_level_simplices = new File(   "hyper PA non-deterministic/" + file_name +  "-tetragon_level-dictated-simplices (4-7).txt" );
+                    
                     File tetragon_level_labels = new File(  directory + file_name + "-tetragon_level-node-labels (4-7).txt");
                     File tetragon_level_simplices = new File(   directory + file_name +  "-tetragon_level-dictated-simplices (4-7).txt" );
 
-
-                    //File triangle_level_simplices = new File(  "CRU " + file_name + " 3 " + prob + " " + type +" -triangle_level-dictated-simplices (3-7).txt");
-                    //File triangle_level_labels = new File( "CRU " + file_name + " 3 " + prob + " " + type +" -triangle_level-node-labels (3-7).txt");
-
-                    //File triangle_level_simplices = new File("hyper_PA " + probability[j] + " " +  file_name + " -triangle_level-dictated-simplices (3-7).txt");
-                    //File triangle_level_labels = new File("hyper_PA " + probability[j] + " " +  file_name + " -triangle_level-node-labels (2-7).txt");
-
-                    //File simplices = new File("Generated data/" + type + "/Simplices/" + file_name + ".txt");
-                    //File simplices_7 = new File("Generated data/" + type + "/Simplices/" + file_name + "(7).txt");
                     // Define buffers
                     BufferedReader br = new BufferedReader(new FileReader(file_simplex));
 
@@ -200,17 +161,7 @@ public class Main {
                     String br_line;
 
                     while ((br_line = br.readLine()) != null) {
-                    /*
-
-                    if (hyper_edge.length <= 7) {
-                        for (int i = 0; i <= hyper_edge.length - 1; i++) {
-                            sim.write(hyper_edge[i]);
-                            sim.write(" ");
-                        }
-                        sim.write("\n");
-                    }
-                    */
-
+                  
                         String[] hyper_edge = br_line.split(" ");
                         // suitable for edge-level projection
 
@@ -289,7 +240,7 @@ public class Main {
 
                 }
 
-            }
-        }
+            
+        
     }
 
