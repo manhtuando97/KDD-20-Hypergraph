@@ -116,25 +116,17 @@ public class Main {
         String[] names = {"DAWN", "email-Eu", "tags-ask-ubuntu", "tags-math"};
 
         String directory = "";
-
-        String[] probability = new String[3];
-        probability[0] = "0.1";
-        probability[1] = "0.5";
-        probability[2] = "0.9";
-
-
+     
         // Edge-level and Triangle-level projections
         for (int i = 1; i <= 1; i ++) {
             
                     String file_name = names[i];
                     
-
                     Hashtable<String, Integer> edgeLevelLabel = new Hashtable();
                     Hashtable<String, Integer> triangleLevelLabel = new Hashtable();
                     Hashtable<String, Integer> tetragonLevelLabel = new Hashtable();
 
-                    // Open the files
-                    
+                    // Open the files                    
                     File file_simplex = new File(  directory + file_name + ".txt");
                     
                     File edge_level_labels = new File (  directory + file_name + "-edge_level-node-labels (2-7).txt");
@@ -236,11 +228,7 @@ public class Main {
                     String complete_statement = "done with " + file_name;
                     System.out.println(complete_statement);
                 }
-
-
-                }
-
-            
-        
+          }         
+      
     }
 
