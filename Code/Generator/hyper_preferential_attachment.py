@@ -66,7 +66,7 @@ class hyper_preferential_attachment:
     def learn_size_distribution(self):
         # Learn the size distribution
         ## For now, we only learn the simplex size distribution based on the size distribution of a real-world hypergraph dataset
-        g = open("size distribution/no repetitions/" + self.name + " size distribution.txt")
+        g = open("size distribution/" + self.name + " size distribution.txt")
         gl = g.readlines()
         size_distribution = []
         for line in gl:
