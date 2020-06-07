@@ -4,7 +4,7 @@ import math
 #from scipy.stats import pareto, lognorm, levy, weibull_max, weibull_min, burr, loggamma, gamma
 from itertools import combinations
 
-class CRU():
+class SS():
 
     def __init__(self, name, type, num_recency, p, k, num_nodes):
         self.name = name                                                                                                # name of the hypergraph
@@ -25,7 +25,7 @@ class CRU():
         return set_index/np.sum(set_index)
 
     def learn_size_distribution(self):                                                                                  # learn the distribution of simplex sizes
-        g = open("size distribution/no repetitions/" + self.name + " size distribution.txt")
+        g = open("size distribution/" + self.name + " size distribution.txt")
         gl = g.readlines()
         size_distribution = []
         for line in gl:
@@ -58,7 +58,7 @@ class CRU():
         return count, distribution
 
     def generate(self, file_name):
-        CRU_file = "CRU/0.8/" + file_name +  ".txt"
+        CRU_file =  file_name +  ".txt"
         f = open(CRU_file, "w")
 
         # learn the simplex size distribution
@@ -246,19 +246,11 @@ def main():
         for j in range(1):
             for p in range(1):
                 # random
-                cru = CRU(directory[i], 'random', 0, range_p[p], range_k[j], num_nodes[i])
+                cru = SS(directory[i], 'random', 0, range_p[p], range_k[j], num_nodes[i])
                 cru.generate(directory[i] + " " +str(range_k[j]) + " " + str(range_p[p]))
                 print("done with " + directory[i])
 
-                '''
-                # specified 100
-                cru = CRU(directory[i], 'specified', 100, range_p[p], range_k[j], num_nodes[i])
-                cru.generate(directory[i] + " " + str(range_k[j]) + " " + str(range_p[p]))
-
-                # specified random 100
-                cru = CRU(directory[i], 'specified random', 100, range_p[p], range_k[j], num_nodes[i])
-                cru.generate(directory[i] + " " + str(range_k[j]) + " " + str(range_p[p]))
-                '''
+                
 
 
 if __name__ == '__main__':
