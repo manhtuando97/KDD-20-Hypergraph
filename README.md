@@ -6,9 +6,17 @@ Datasets
 ====================
 The preprocessed datasets with unique hyperedges are listed [here](https://github.com/manhtuando97/KDD-20-Hypergraph/tree/master/Datasets) 
 
-Running decomposition & generators
+Running 
 ====================
-Please see
+Please see [User Guide]()
+
+Results
+====================
+Complete data & experimental results can be found at [Online Appendix](online_appendix.pdf)
+
+Contact
+====================
+If you have any questions, please contact [Manh Tuan Do](manh.it97@kaist.ac.kr)
 
 Reference
 ====================
