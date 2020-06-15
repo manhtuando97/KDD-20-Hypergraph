@@ -4,7 +4,7 @@ This repository contains datasets and codes for the paper "Structural Patterns a
 
 Datasets
 ====================
-The preprocessed datasets with unique hyperedges can be found in the repository 'Datasets'. 
+The preprocessed datasets with unique hyperedges are listed [here](https://github.com/manhtuando97/KDD-20-Hypergraph/tree/master/Datasets) 
 
 Running decomposition & generators
 ====================
