@@ -16,7 +16,7 @@ Complete data & experimental results can be found at [Online Appendix](online_ap
 
 Contact
 ====================
-If you have any questions, please contact [Manh Tuan Do](manh.it97@kaist.ac.kr)
+If you have any questions, please contact [Manh Tuan Do](mailto:manh.it97@kaist.ac.kr)
 
 Reference
 ====================
