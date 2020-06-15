@@ -1,4 +1,3 @@
-# KDD-20-Hypergraph
 Structural Patterns and Generative Models of Real-world Hypergraphs
 ====================
 This repository contains datasets and codes for the paper "Structural Patterns and Generative Models of Real-world Hypergraphs"
