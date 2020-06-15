@@ -113,7 +113,7 @@ public class Main {
     public static void main(String[] args) throws IOException {
 	
 
-        String[] names = {"DAWN", "email-Eu", "tags-ask-ubuntu", "tags-math"};
+        String[] names = {};
 
         String directory = "";
      
