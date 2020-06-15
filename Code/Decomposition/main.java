@@ -70,44 +70,44 @@ public class Main {
     }
 
 
-    public static String[] simplexToTetragonlevel(int [] simplex){
+    public static String[] simplexToFcliquelevel(int [] simplex){
         int simplex_size = simplex.length;
-        String[] TetragonLevelNodes = new String[simplex_size * (simplex_size - 1) * (simplex_size - 2) * (simplex_size - 3)/ 24];
+        String[] FcliquenLevelNodes = new String[simplex_size * (simplex_size - 1) * (simplex_size - 2) * (simplex_size - 3)/ 24];
         int i,j,k,t, count;
         count = 0;
         for (i= 0; i <= simplex_size - 4; i++){
             for (j = i+1; j <= simplex_size - 3; j ++){
                 for (k = j + 1; k <= simplex_size - 2; k++){
                     for ( t = k + 1; t <= simplex_size - 1; t++){
-                        String tetragonLevelNode = String.valueOf(simplex[i]) + "," + String.valueOf(simplex[j]) + "," + String.valueOf(simplex[k] + "," + String.valueOf(simplex[t]));
-                        TetragonLevelNodes[count] = tetragonLevelNode;
+                        String fcliqueLevelNode = String.valueOf(simplex[i]) + "," + String.valueOf(simplex[j]) + "," + String.valueOf(simplex[k] + "," + String.valueOf(simplex[t]));
+                        FcliqueLevelNodes[count] = fcliqueLevelNode;
                         count++;
                     }
 
                 }
             }
         }
-        return TetragonLevelNodes;
+        return FcliqueLevelNodes;
     }
 
-    public static String[] simplexStringToTetragonlevel(String[] simplex){
+    public static String[] simplexStringToFcliquelevel(String[] simplex){
         int simplex_size = simplex.length;
-        String[] TetragonLevelNodes = new String[simplex_size * (simplex_size - 1) * (simplex_size - 2) * (simplex_size - 3)/ 24];
+        String[] FcliqueLevelNodes = new String[simplex_size * (simplex_size - 1) * (simplex_size - 2) * (simplex_size - 3)/ 24];
         int i,j,k,t, count;
         count = 0;
         for (i= 0; i <= simplex_size - 4; i++){
             for (j = i+1; j <= simplex_size - 3; j ++){
                 for (k = j + 1; k <= simplex_size - 2; k++){
                     for ( t = k + 1; t <= simplex_size - 1; t++){
-                        String tetragonLevelNode = String.valueOf(simplex[i]) + "," + String.valueOf(simplex[j]) + "," + String.valueOf(simplex[k] + "," + String.valueOf(simplex[t]));
-                        TetragonLevelNodes[count] = tetragonLevelNode;
+                        String fcliqueLevelNode = String.valueOf(simplex[i]) + "," + String.valueOf(simplex[j]) + "," + String.valueOf(simplex[k] + "," + String.valueOf(simplex[t]));
+                        FcliqueLevelNodes[count] = fcliqueLevelNode;
                         count++;
                     }
 
                 }
             }
         }
-        return TetragonLevelNodes;
+        return FcliqueLevelNodes;
     }
 
     public static void main(String[] args) throws IOException {
@@ -124,31 +124,31 @@ public class Main {
                     
                     Hashtable<String, Integer> edgeLevelLabel = new Hashtable();
                     Hashtable<String, Integer> triangleLevelLabel = new Hashtable();
-                    Hashtable<String, Integer> tetragonLevelLabel = new Hashtable();
+                    Hashtable<String, Integer> fcliqueLevelLabel = new Hashtable();
 
                     // Open the files                    
-                    File file_simplex = new File(  directory + file_name + ".txt");
+                    File file_hyperedges = new File(  directory + file_name + ".txt");
                     
-                    File edge_level_labels = new File (  directory + file_name + "-edge_level-node-labels (2-7).txt");
-                    File edge_level_simplices = new File(  directory + file_name + "-edge_level-dictated-simplices (2-7).txt");
+                    File edge_level_labels = new File (  directory + file_name + "-edge_level-node-labels.txt");
+                    File edge_level_decomposed = new File(  directory + file_name + "-edge_level-decomposed.txt");
                     
-                    File triangle_level_labels = new File(  directory + file_name + "-triangle_level-node-labels (3-7).txt");
-                    File triangle_level_simplices = new File(   directory + file_name +  "-triangle_level-dictated-simplices (3-7).txt" );
+                    File triangle_level_labels = new File(  directory + file_name + "-triangle_level-node-labels.txt");
+                    File triangle_level_decomposed = new File(   directory + file_name +  "-triangle_level-decomposed.txt" );
                     
-                    File tetragon_level_labels = new File(  directory + file_name + "-tetragon_level-node-labels (4-7).txt");
-                    File tetragon_level_simplices = new File(   directory + file_name +  "-tetragon_level-dictated-simplices (4-7).txt" );
+                    File fclique_level_labels = new File(  directory + file_name + "-4clique_level-node-labels.txt");
+                    File fclique_level_decomposed = new File(   directory + file_name +  "-4clique_level-decomposed.txt" );
 
                     // Define buffers
-                    BufferedReader br = new BufferedReader(new FileReader(file_simplex));
+                    BufferedReader br = new BufferedReader(new FileReader(file_hyperedges));
 
-                    BufferedWriter sim = new BufferedWriter(new FileWriter(edge_level_simplices));
+                    BufferedWriter sim = new BufferedWriter(new FileWriter(edge_level_decomposed));
                     BufferedWriter label = new BufferedWriter(new FileWriter(edge_level_labels));
 
-                    BufferedWriter sim_t = new BufferedWriter(new FileWriter(triangle_level_simplices));
+                    BufferedWriter sim_t = new BufferedWriter(new FileWriter(triangle_level_decomposed));
                     BufferedWriter label_t = new BufferedWriter(new FileWriter(triangle_level_labels));
 
-                    BufferedWriter sim_tt = new BufferedWriter(new FileWriter(tetragon_level_simplices));
-                    BufferedWriter label_tt = new BufferedWriter(new FileWriter(tetragon_level_labels));
+                    BufferedWriter sim_tt = new BufferedWriter(new FileWriter(fclique_level_decomposed));
+                    BufferedWriter label_tt = new BufferedWriter(new FileWriter(fclique_level_labels));
 
                     String br_line;
 
@@ -197,17 +197,17 @@ public class Main {
 
 
                         if (hyper_edge.length >= 4 && hyper_edge.length <= 7){
-                            String[] tetragonLevelNodes = simplexStringToTetragonlevel(hyper_edge);
-                            for (int it = 0; it <= tetragonLevelNodes.length - 1; it++ ){
+                            String[] fcliqueLevelNodes = simplexStringToFcliquelevel(hyper_edge);
+                            for (int it = 0; it <= fcliqueLevelNodes.length - 1; it++ ){
                                 int write_value;
-                                if (tetragonLevelLabel.get(tetragonLevelNodes[it]) == null) {
-                                    write_value = tetragonLevelLabel.size() + 1;
-                                    tetragonLevelLabel.put(tetragonLevelNodes[it], tetragonLevelLabel.size() + 1);
+                                if (fcliqueLevelLabel.get(fcliqueLevelNodes[it]) == null) {
+                                    write_value = fcliqueLevelLabel.size() + 1;
+                                    fcliqueLevelLabel.put(fcliqueLevelNodes[it], fcliqueLevelLabel.size() + 1);
                                     label_tt.write(String.valueOf(write_value));
-                                    label_tt.write(" " + tetragonLevelNodes[it] + "\n");
+                                    label_tt.write(" " + fcliqueLevelNodes[it] + "\n");
                                 }
                                 else{
-                                    write_value = tetragonLevelLabel.get(tetragonLevelNodes[it]);
+                                    write_value = fcliqueLevelLabel.get(fcliqueLevelNodes[it]);
                                 }
                                 sim_tt.write(String.valueOf(write_value));
                                 sim_tt.write(" ");
