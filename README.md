@@ -8,7 +8,7 @@ The preprocessed datasets with unique hyperedges are listed [here](https://githu
 
 Running 
 ====================
-Please see [User Guide]()
+Please see [User Guide](user_guide.pdf)
 
 Results
 ====================
