@@ -72,7 +72,7 @@ public class Main {
 
     public static String[] simplexToFcliquelevel(int [] simplex){
         int simplex_size = simplex.length;
-        String[] FcliquenLevelNodes = new String[simplex_size * (simplex_size - 1) * (simplex_size - 2) * (simplex_size - 3)/ 24];
+        String[] FcliqueLevelNodes = new String[simplex_size * (simplex_size - 1) * (simplex_size - 2) * (simplex_size - 3)/ 24];
         int i,j,k,t, count;
         count = 0;
         for (i= 0; i <= simplex_size - 4; i++){
