@@ -10,6 +10,7 @@ import random
 import math
 #from scipy.stats import pareto, lognorm, levy, weibull_max, weibull_min, burr, loggamma, gamma
 from itertools import combinations
+import argparse
 
 ### IMPORTANT
 # Nodes are numbers from 1,2...
@@ -17,26 +18,41 @@ from itertools import combinations
 class preferential_attachment:
 
     # a simple graph generator object of preferential attachment law
-    def __init__(self, name, k = 1, randomness = 0, version = 'non-correlated', num_nodes = 1000, type = 'non-deterministic'):
-        self.name = name                                        # a string, name of our hyper-graph, for now it must be name of 1 of 16 available hypergraph datasets
-        self.k = k
-        self.randomness = randomness                            # level of randomness, between 0 and 1
-        self.current_num_nodes = 0                              # current number of nodes present in the hypergraph
-        self.num_nodes = num_nodes                              # total number of nodes
-        self.file_name = ""                                     # name of the text file to store the hyper-graph
-        self.size = 0                                           # current number of nodes in our hyper-graph
-        self.degrees = [0] * num_nodes                         # store the degrees of the nodes in our hyper-graph
-                                                                # "degree" of a node is defined to be the number of simplicies involving that node
-        self.deg_list = [dict() for x in range(24)]             # store degrees of simplices of size 2-25, deg_list[i] stores "degrees" of simplices of size (i+2)
-                                                                # store degrees of 2-simplex (edge) in deg_list[0], key is "a,b" for an edge connecting node a and b
-                                                                # store degrees of 3-simplex (triangle) in deg_list[1]
-                                                                # ...
-                                                                # after forming a simplex of size(n), need to update deg_list[i] for i = 0,1,...(n-2)
-        self.version = version                                  # either 'correlated' or 'preferential'
-                                                                # 'correlated': if 1 new node forms 2 new simplices, they should be correlated (having intersection at least 1 element)
-                                                                # 'preferential': only care about degree of the groups, not account for correlation
+    def __init__(self, args):
+        self.name = args.name                                                       # a string, name of our hyper-graph, for now it must be name of 1 of 4 available hypergraph datasets
+        self.k = args.k                                                             # k in deterministic version
+        self.randomness = args.randomness                                           # level of randomness, between 0 and 1
+        self.current_num_nodes = 0                                                  # current number of nodes present in the hypergraph
+        self.num_nodes = args.num_nodes                                             # total number of nodes
+        self.file_name = args.file_name                                             # name of the text file to store the hyper-graph
+        self.size = 0                                                               # current number of nodes in our hyper-graph
+        self.degrees = [0] * self.num_nodes                                         # store the degrees of the nodes in our hyper-graph
+                                                                                    # "degree" of a node is defined to be the number of simplicies involving that node
+        self.deg_list = [dict() for x in range(24)]                                 # store degrees of simplices of size 2-25, deg_list[i] stores "degrees" of simplices of size (i+2)
+                                                                                    # store degrees of 2-simplex (edge) in deg_list[0], key is "a,b" for an edge connecting node a and b
+                                                                                    # store degrees of 3-simplex (triangle) in deg_list[1]
+                                                                                    # ...
+                                                                                    # after forming a simplex of size(n), need to update deg_list[i] for i = 0,1,...(n-2)
+        self.version = args.version                                                 # either 'correlated' or 'non-correlated'
+                                                                                    # 'correlated': if 1 new node forms 2 new simplices, they should be correlated (having intersection at least 1 element)
+                                                                                    # 'non-correlated': only care about degree of the groups, not account for correlation
 
-        self.type = type
+        self.type = args.type                                                       # how number of new hyperedges per new node is determined
+                                                                                    # either 'deterministic': each new node introduces self.k new hyperedges
+                                                                                    # or 'non-deterministic': must be sampled from a distribution, learned by self.learn_number_simplices_per_node()
+
+        self.size_distribution_directory = args.size_distribution_directory         # directory containing the size distribution file
+
+        self.simplex_per_node_directory = args.simplex_per_node_directory           # directory containing the distribution of hyperedges per new node
+
+        self.file_name = args.file_name                                             # name of the output file
+        self.output_directory = args.output_directory                               # directory containing the output file
+
+        self.deg_list = [dict() for x in range(24)]                                 # store degrees of simplices of size 2-25, deg_list[i] stores "degrees" of simplices of size (i+2)
+                                                                                    # store degrees of 2-simplex (edge) in deg_list[0], key is "a,b" for an edge connecting node a and b
+                                                                                    # store degrees of 3-simplex (triangle) in deg_list[1]
+                                                                                    # ...
+                                                                                    # after forming a simplex of size(n), need to update deg_list[i] for i = 0,1,...(n-2)
 
     # Compute the probability of being chosen based on the degree distribution
     # Sometimes, we use self.degrees, sometimes we use another one
@@ -66,7 +82,7 @@ class preferential_attachment:
     def learn_size_distribution(self):
         # Learn the size distribution
         ## For now, we only learn the simplex size distribution based on the size distribution of a real-world hypergraph dataset
-        g = open("size distribution/" + self.name + " size distribution.txt")
+        g = open(self.size_distribution_directory + "/" + self.name + " size distribution.txt")
         gl = g.readlines()
         size_distribution = []
         for line in gl:
@@ -79,7 +95,7 @@ class preferential_attachment:
     # learn the distribution of number of simplices that each new node will bring
 
     def learn_number_simplices_per_node(self):
-        g = open("simplex per node/" + self.name + "-simplices-per-node-distribution.txt", "r")
+        g = open(self.simplex_per_node_directory + "/" + self.name + "-simplices-per-node-distribution.txt", "r")
         count = -1
 
         for line in g:
@@ -87,7 +103,7 @@ class preferential_attachment:
         distribution = [0] * (count + 1)
         g.close()
 
-        g = open("simplex per node/" + self.name + "-simplices-per-node-distribution.txt", "r")
+        g = open(self.simplex_per_node_directory + "/" + self.name + "-simplices-per-node-distribution.txt", "r")
 
         index = 0
         for line in g:
@@ -103,7 +119,7 @@ class preferential_attachment:
 
 
     ### generate the hypergraph
-    def generate(self, file_name):
+    def generate(self):
         ### SIMPLE Graph generator, having several constraints, you can add more if necessary
 
         # The number of nodes must be at least 200 (this is the smallest number of nodes in a real-world hyper-graph dataset)
@@ -112,9 +128,9 @@ class preferential_attachment:
             return (-1)
 
         # output file to write the generated hypergraph
-        self.file_name = file_name
+        file_name = self.file_name
         #f = open("hyper_PA " + str(self.randomness) + " " + file_name + " " + str(self.k) + ".txt", "w")
-        f = open(file_name + ".txt", "w")
+        f = open(self.output_directory + "/" + file_name + ".txt", "w")
 
         # learn size distribution
         size_distribution = self.learn_size_distribution()
@@ -177,27 +193,50 @@ class preferential_attachment:
 
         f.close()
 
+def arg_parse():
+    parser = argparse.ArgumentParser(description="HyperPA arguments.")
+
+    parser.add_argument('--name', dest='name', help='name of the dataset')
+    parser.add_argument('--randomness', dest='randomness', type=float,  help='randomness')
+    parser.add_argument('--version', dest='version', help='how hyperedges of the same node should be correlated')
+    parser.add_argument('--num_nodes', dest='num_nodes', type=int, help='number of nodes in the hypergraphs')
+    parser.add_argument('--type', dest='type', help='how number of hyperedges per new node is determined')
+
+    parser.add_argument('--k', dest='k', type=int, help='k in the deterministic version')
+
+    # regarding input, output files
+    parser.add_argument('--size_distribution_directory', dest='size_distribution_directory', help='directory containing the size distribution file')
+
+
+    parser.add_argument('--simplex_per_node_directory', dest='simplex_per_node_directory', help='directory containing the distribution of hyperedges per new node')
+
+    parser.add_argument('--file_name', dest='file_name', help='name of the output file')
+    parser.add_argument('--output_directory', dest='output_directory', help='directory containing the output file')
+
+    parser.set_defaults(randomness=0,
+                        type='non-deterministic',
+                        version='non-correlated',
+                        k=3,
+                        size_distribution_directory='size distribution',
+                        simplex_per_node_directory='simplex per node',
+                        output_directory='output'
+                        )
+    return parser.parse_args()
+
+
 def main():
-    # for now, this log-normal distribution mean 0.5, variance 1 seems fine
     # Generating hyper-graphs with the same number of nodes and edges with the 16 realworld hypergraph datasets
 
-    directory = ["coauth-DBLP", "coauth-MAG-Geology", "coauth-MAG-history", "congress-bills", "contact-high-school", "contact-primary-school", "DAWN", "email-Enron", "email-Eu", "NDC-classes", "NDC-substances", "tags-ask-ubuntu", "tags-math", "tags-stack-overflow", "threads-math", "threads-stack-overflow"]
-    number_nodes = [1924991, 1256385, 1014734, 1718, 327, 242, 2558, 148, 1005,  1161, 5311, 3029, 1629, 49998, 176445, 2675955]
-    number_simplices = [3700067, 1590335, 1812511, 260851, 172035, 106879, 2272433, 10883, 234760, 49724, 112405, 271233, 822059, 14458875, 719792, 11305343]
-
-    randomness = [0.1, 0.5, 0.9]
+    directory = ["DAWN", "email-Eu", "tags-ask-ubuntu", "tags-math"]
+    num_nodes = [2558, 1005, 3029, 1629]
 
 
-    #k_range = [50, 105, 111, 3, 4]
-    k_range = [4]
-    considered_range = [8, 11, 12]
+    prog_args = arg_parse()
 
-    index = 0
-    for i in considered_range:
-        generator = preferential_attachment(directory[i],  randomness = 0, version = 'not correlated',  num_nodes = number_nodes[i])
-        generator.generate(directory[i])
-        print("done with " + directory[i])
-        #index += 1
+    # To run by command line
+    generator = preferential_attachment(prog_args)
+    generator.generate()
+    print("done with " + str(prog_args.name))
 
 
 
