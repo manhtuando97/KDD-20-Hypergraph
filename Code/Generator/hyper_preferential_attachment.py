@@ -1,5 +1,5 @@
 # Extension of preferential attachment to hypergraph
-# Extension idea: when a new node is introduced, it forms simplex rather than pair-wise links as in the original BA (preferential attachment) model
+# Extension idea: when a new node is introduced, it forms simplex rather than pair-wise links as in the original PA (preferential attachment) model
 # Hyper-graph "flavor": the new node chooses other (simplex_size - 1) nodes by choosing a group of size (simplex_size-1) based on the "degrees" of groups
 # Some randomness is allowed: when forming each new simplex with a new node: with some probability p, other nodes are chosen randomly; with chance (1-p), other nodes are chosen according to what stated above.
 
